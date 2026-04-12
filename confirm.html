@@ -1,18 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Confirming Email...</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podium — Email Confirmed</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #F4F3EA;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 48px;
+      opacity: 0.6;
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(0, 228, 77, 0.12);
+      border: 1px solid rgba(0, 228, 77, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: #00E44D;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 15px;
+      color: rgba(244, 243, 234, 0.6);
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto 36px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #5E45FF;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 1000px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .desktop-note {
+      display: none;
+      margin-top: 20px;
+      font-size: 13px;
+      color: rgba(244, 243, 234, 0.4);
+      max-width: 300px;
+    }
+  </style>
 </head>
-<body style="font-family: Arial; text-align: center; margin-top: 100px;">
-  <h2>Confirming your email...</h2>
-  <p>Please wait...</p>
+<body>
+  <div class="logo">Podium</div>
+
+  <div class="icon">
+    <svg viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+
+  <h1>Email confirmed!</h1>
+  <p>Your account is ready. Open the Podium app to log in and start tracking.</p>
+
+  <a class="btn" id="openBtn" href="podium://login-callback/">Open Podium</a>
+
+  <p class="desktop-note" id="desktopNote">
+    On a desktop? Open Podium on your phone and log in — your account is already confirmed.
+  </p>
 
   <script>
-    const hash = window.location.hash;
-    if (hash) {
-      window.location.href = `podium://auth-callback${hash}`;
-    } else {
-      document.body.innerHTML = "<h2>Invalid confirmation link.</h2>";
+    // Detect if we're likely on desktop and surface the fallback note
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
+      document.getElementById('desktopNote').style.display = 'block';
+    }
+
+    // On mobile, attempt the deep link immediately
+    document.getElementById('openBtn').addEventListener('click', function(e) {
+      if (!isMobile) {
+        e.preventDefault();
+        document.getElementById('desktopNote').style.display = 'block';
+      }
+    });
+
+    // Auto-attempt deep link on mobile after a short delay
+    if (isMobile) {
+      setTimeout(() => {
+        window.location.href = 'podium://login-callback/';
+      }, 800);
     }
   </script>
 </body>
