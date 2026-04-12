@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Confirming Email...</title>
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 100px;">
+  <h2>Confirming your email...</h2>
+  <p>Please wait...</p>
+
+  <script>
+    const hash = window.location.hash;
+    if (hash) {
+      window.location.href = `podium://auth-callback${hash}`;
+    } else {
+      document.body.innerHTML = "<h2>Invalid confirmation link.</h2>";
+    }
+  </script>
+</body>
+</html>
